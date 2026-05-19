@@ -1,0 +1,43 @@
+name: "detect-secrets CI"
+on:
+  push:
+
+
+jobs:
+  detect-secrets:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install detect-secrets
+        run: pip install detect-secrets
+
+      - name: Generate baseline (if not present)
+        run: |
+          if [ ! -f .secrets.baseline ]; then
+            echo "No baseline found, creating one..."
+            detect-secrets scan > .secrets.baseline
+          fi
+
+      - name: Scan for new secrets
+        run: |
+          detect-secrets scan --baseline .secrets.baseline
+
+      - name: Audit baseline (report findings)
+        run: |
+          detect-secrets audit --report --only-real .secrets.baseline || true
+
+      - name: Fail if new secrets detected
+        run: |
+          git diff --quiet .secrets.baseline || (
+            echo "❌ New secrets detected! Review .secrets.baseline and commit it, or audit false positives."
+            exit 1
+          )
