@@ -1,4 +1,4 @@
-name: "TruffleHod CI"
+name: "TruffleHog CI"
 on: 
  push:
 
