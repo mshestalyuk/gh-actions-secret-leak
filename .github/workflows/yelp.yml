@@ -1,6 +1,6 @@
 name: "detect-secrets CI"
 on:
-  push:
+  workflow_dispatch:
 
 
 jobs:

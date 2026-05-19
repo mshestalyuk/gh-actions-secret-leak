@@ -1,6 +1,6 @@
 name: "GitLeaks CI"
 on:
- workflow_dispatch:
+ push:
 
 jobs:
     git-leaks:
