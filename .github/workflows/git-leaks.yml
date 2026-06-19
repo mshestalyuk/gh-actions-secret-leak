@@ -7,10 +7,10 @@ jobs:
         runs-on: ubuntu-24.04
         steps:
             - name: Checkout code
-              uses: actions/checkout@v6
+              uses: actions/checkout@v7
               with:
                 fetch-depth: 0
             - name: GitLeaks Secret Scanning
-              uses: gitleaks/gitleaks-action@v2
+              uses: gitleaks/gitleaks-action@v3
               env:
                 GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
